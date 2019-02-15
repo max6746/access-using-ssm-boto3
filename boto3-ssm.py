@@ -8,13 +8,9 @@ def check_status(commandId, instanceId):
             CommandId=commandId,
             InstanceId=instanceId
         )
-    resp = response2['StatusDetails']
-    if resp != 'Success':
-        print(resp)
-        time.sleep(5)
-        check_status(commandId,instanceId)
-    print("Output: {0}".format(response2['StandardOutputContent']))
-    return resp
+    status = response2['StatusDetails']
+    output = response2['StandardOutputContent']
+    return status, output;
 
 def command_func(comm, instanceId):
     client = boto3.client('ssm')
@@ -42,13 +38,15 @@ def main():
     instanceId = 'i-066328aa95bec1ca8'
     for index in range(1,len(sys.argv)):
         commandId = command_func(str(sys.argv[index]), instanceId)
-        status = check_status(commandId,instanceId)
-        if status == "Success":
-            print('Success Main')
-        elif status == "Failed":
-            print('Failed')
-        else:
-            print('Status: {0}'.format(status))
+        status, output = check_status(commandId,instanceId)
+        while (
+                status == "Pending" or status == "InProgress" or
+                status == "Delayed"):
+            print(status)
+            time.sleep(5)
+            status, output = check_status(commandId,instanceId)
+        print("Status: {0}".format(status))
+        print("Output: {0}".format(output))
 
 if __name__ == '__main__':
     main()
