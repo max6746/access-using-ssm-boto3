@@ -30,7 +30,7 @@ def command_func(comm, instanceId):
     status = response['Command']['StatusDetails']
     commandId = response['Command']['CommandId']
 
-    print(status)
+    #print(status)
     return commandId
 
 #Call func to check status
@@ -46,8 +46,8 @@ def main():
             print(status)
             time.sleep(5)
             status, output = check_status(commandId,instanceId)
-    print("Output: {0}".format(output))
-    print("Status: {0}".format(status))
+        print("Output: {0}".format(output))
+        print("Status: {0}".format(status))
 
 if __name__ == '__main__':
     main()
