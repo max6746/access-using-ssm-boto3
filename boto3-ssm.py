@@ -37,6 +37,7 @@ def command_func(comm, instanceId):
 def main():
     instanceId = 'i-066328aa95bec1ca8'
     for index in range(1,len(sys.argv)):
+        print("Command: '{0}'".format(sys.argv[index]))
         commandId = command_func(str(sys.argv[index]), instanceId)
         status, output = check_status(commandId,instanceId)
         while (
@@ -45,8 +46,8 @@ def main():
             print(status)
             time.sleep(5)
             status, output = check_status(commandId,instanceId)
-        print("Status: {0}".format(status))
-        print("Output: {0}".format(output))
+    print("Output: {0}".format(output))
+    print("Status: {0}".format(status))
 
 if __name__ == '__main__':
     main()
